@@ -1,0 +1,117 @@
+.welcome {
+    height: 10vh;
+    background-color: var(--skyblue-600);
+    padding: 0vh 2vw 0vh 2vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+
+    span {
+        color: white;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+.card {
+    height: 25vh;
+    margin: 0vh 1.5vw 0vh 4vw;
+    flex: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .cardShadow {
+        flex: 50%;
+        margin: 6px 12px 12px 0px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+
+        .title {
+            flex: 20%;
+            background-color: var(--skyblue-200);
+            color: var(--skyblue-950);
+            font-weight: 600;
+            margin: 1vh;
+            border-radius: 5px;
+        }
+
+        .body {
+            flex: 80%;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: space-around;
+
+            .bodyTitle {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-around;
+                color: var(--skyblue-500);
+                font-weight: 500;
+
+                span {
+                    flex: 33%;
+                }
+            }
+
+            .bodyContent {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-around;
+                font-size: 30px;
+                font-weight: 600;
+                color: var(--skyblue-800);
+
+                span {
+                    flex: 33%;
+                }
+            }
+        }
+    }
+}
+
+.chartCard {
+    height: 62vh;
+    position: relative;
+    margin: 1vh 1.5vw 2vh 4vw;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+
+    span {
+        height: 10%;
+        font-weight: 600;
+        color: var(--skyblue-800);
+    }
+
+    .chart {
+        height: 90%;
+        max-width: 100%;
+        margin: 0vh 1vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .card {
+        height: 18vh;
+
+        .cardShadow {
+            .body {
+                .bodyTitle {
+                    span {
+                        font-size: 15px;
+                    }
+                }
+
+                .bodyContent {
+                    span {
+                        font-size: 30px;
+                    }
+                }
+            }
+        }
+    }
+}

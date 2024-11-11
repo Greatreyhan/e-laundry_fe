@@ -331,13 +331,23 @@ code {
 .normalTable thead {
   background-color: var(--skyblue-100);
   color: var(--skyblue-900);
+
+  tr {
+    th {
+      padding: 0px 25px 0px 25px;
+    }
+  }
 }
 
-.normalTable tbody tr{
+.normalTable tbody tr {
   font-weight: 500;
+
+  td {
+    margin: 0px 40px 0px 40px;
+  }
 }
 
-.normalTable tbody tr:hover{
+.normalTable tbody tr:hover {
   background-color: var(--skyblue-50);
 }
 
@@ -367,30 +377,35 @@ code {
   font-weight: 500;
 }
 
-.normalTable .can-hover .tooltip .button-tooltip{
+.normalTable .can-hover .tooltip .button-tooltip {
   padding: 1px 15px;
 }
 
-.normalTable .can-hover .tooltip .button-tooltip:hover{
+.normalTable .can-hover .tooltip .button-tooltip:hover {
   background-color: var(--skyblue-300);
   color: white;
 }
 
-.normalTable .can-hover .tooltip .button-tooltip-delete{
+.normalTable .can-hover .tooltip .button-tooltip-delete {
   padding: 1px 15px;
 }
 
-.normalTable .can-hover .tooltip .button-tooltip-delete:hover{
+.normalTable .can-hover .tooltip .button-tooltip-delete:hover {
   background-color: var(--rose-300);
   color: white;
 }
 
 .skyblue-button {
-  color: #ffffff; /* Equivalent to text-white */
-  font-size: 0.875rem; /* Equivalent to text-sm */
-  background-color: var(--skyblue-600); /* Equivalent to bg-sky-800 */
-  padding: 0.375rem 2rem; /* Equivalent to px-8 py-1.5 */
-  border-radius: 0.375rem; /* Equivalent to rounded-md */
+  color: #ffffff;
+  /* Equivalent to text-white */
+  font-size: 0.875rem;
+  /* Equivalent to text-sm */
+  background-color: var(--skyblue-600);
+  /* Equivalent to bg-sky-800 */
+  padding: 0.375rem 2rem;
+  /* Equivalent to px-8 py-1.5 */
+  border-radius: 0.375rem;
+  /* Equivalent to rounded-md */
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -401,11 +416,16 @@ code {
 }
 
 .rose-button {
-  color: #ffffff; /* Equivalent to text-white */
-  font-size: 0.875rem; /* Equivalent to text-sm */
-  background-color: var(--rose-600); /* Equivalent to bg-sky-800 */
-  padding: 0.375rem 2rem; /* Equivalent to px-8 py-1.5 */
-  border-radius: 0.375rem; /* Equivalent to rounded-md */
+  color: #ffffff;
+  /* Equivalent to text-white */
+  font-size: 0.875rem;
+  /* Equivalent to text-sm */
+  background-color: var(--rose-600);
+  /* Equivalent to bg-sky-800 */
+  padding: 0.375rem 2rem;
+  /* Equivalent to px-8 py-1.5 */
+  border-radius: 0.375rem;
+  /* Equivalent to rounded-md */
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -416,11 +436,16 @@ code {
 }
 
 .white-button {
-  color: var(--skyblue-700); /* Equivalent to text-white */
-  font-size: 0.875rem; /* Equivalent to text-sm */
-  background-color: var(--skyblue-50); /* Equivalent to bg-sky-800 */
-  padding: 0.375rem 2rem; /* Equivalent to px-8 py-1.5 */
-  border-radius: 0.375rem; /* Equivalent to rounded-md */
+  color: var(--skyblue-700);
+  /* Equivalent to text-white */
+  font-size: 0.875rem;
+  /* Equivalent to text-sm */
+  background-color: var(--skyblue-50);
+  /* Equivalent to bg-sky-800 */
+  padding: 0.375rem 2rem;
+  /* Equivalent to px-8 py-1.5 */
+  border-radius: 0.375rem;
+  /* Equivalent to rounded-md */
   border: none;
   transition: all 0.3s ease;
 }
@@ -470,15 +495,15 @@ code {
   transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: var(--skyblue-500);
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
