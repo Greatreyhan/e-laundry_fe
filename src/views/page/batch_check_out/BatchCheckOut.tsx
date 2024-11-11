@@ -181,8 +181,8 @@ const BatchCheckOut = () => {
             </div>
 
             {/* Table Area */}
-            <div style={{ height: "83dvh", padding: "2vh 4vw 1vh 4vw" }}>
-                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "78vh" }}>
+            <div style={{ height: "70dvh", padding: "2vh 4vw 1vh 4vw" }}>
+                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "70vh" }}>
                     <div style={{ height: "100%", width: "100%", position: "relative" }}>
                         <div>&nbsp;</div>
                         <table className="normalTable">
@@ -240,7 +240,7 @@ const BatchCheckOut = () => {
                 popupTitle={`Add New Batch`}
                 popupContent={
                     <>
-                        <div style={{ height: "100%", padding: "1vh 1vw", width: "70vw" }}>
+                        <div style={{ height: "100%", padding: "1vh 1vw", width: "100%", overflow: "auto", position: "relative", }}>
                             <table className="normalTable" style={{ textAlign: "center", marginTop: "2px" }}>
                                 <thead>
                                     <tr>
@@ -291,7 +291,7 @@ const BatchCheckOut = () => {
                 popupTitle={`View Linens`}
                 popupContent={
                     <>
-                        <div style={{ height: "100%", padding: "1vh 1vw", width: "70vw" }}>
+                        <div style={{ height: "100%", padding: "1vh 1vw", width: "100%", overflow: "auto", position: "relative", }}>
                             <table className="normalTable" style={{ textAlign: "center", marginTop: "2px" }}>
                                 <thead>
                                     <tr>

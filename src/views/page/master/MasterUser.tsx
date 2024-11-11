@@ -166,10 +166,11 @@ const MasterUser = () => {
             </div>
 
             {/* Table Area */}
-            <div style={{ height: "83dvh", padding: "2vh 4vw 1vh 4vw" }}>
-                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "78vh" }}>
-                    <div style={{ height: "100%", width: "100%", position: "relative" }}>
+            <div style={{ height: "70dvh", padding: "2vh 4vw 1vh 4vw" }}>
+                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "70vh" }}>
+                    <div style={{ height: "100%", maxWidth: "92dvw", position: "relative", }}>
                         <div>&nbsp;</div>
+                        <div style={{position: "relative", overflow: "auto", height: "90%"}}>
                         <table className="normalTable">
                             <thead>
                                 <tr>
@@ -204,6 +205,7 @@ const MasterUser = () => {
                                 </tbody>
                             }
                         </table>
+                        </div>
                         <div className={css[`pagination-container`]}>
                             {tableListUser != null &&
                                 <div>{paginationTableListUser.start + 1}-{paginationTableListUser.end > tableListUser.length ? tableListUser.length ?? 0 : paginationTableListUser.end ?? 0}</div>
