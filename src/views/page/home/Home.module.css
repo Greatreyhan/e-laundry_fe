@@ -17,7 +17,7 @@
     /* bg-sky-100 */
     border-radius: 8px;
     width: 33%;
-    z-index: 50;
+    z-index: 1;
 
     .loginImage {
       width: 100%;

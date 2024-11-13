@@ -76,6 +76,7 @@ function App() {
         <BrowserRouter>
           <Navbar showNavbar={showNavbar} setShowNavbar={setShowNavbar} />
           <RunningText/>
+          {/* <div>oioioi</div> */}
           <Suspense fallback={
             <div >
               {/* Please Give Loading Animation :D*/}

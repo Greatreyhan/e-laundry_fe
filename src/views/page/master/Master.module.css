@@ -29,11 +29,29 @@
     cursor: pointer;
 }
 
+.container-header{
+    @media (min-width: 769px) {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        justify-content: space-between;
+    }
+
+    @media (max-width: 768px) and (min-width: 641px) {
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+    }
+
+    @media (max-width: 640px) {
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+    }
+}
+
 .search-container {
     background-color: var(--skyblue-50);
-    position: absolute;
-    bottom: 30%;
-    width: 40%;
     border-radius: 4px;
     display: flex;
     flex-direction: row;
@@ -54,6 +72,21 @@
     margin-right: 0.5rem;
     outline: none;
     background-color: var(--skyblue-50);
+}
+
+.search-button {
+    background-color: var(--skyblue-800); 
+    padding: 0.25rem 1.5rem; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 0.875rem; 
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    transition: background-color 0.2s ease-in-out;
+    background-color: var(--skyblue-900); /* equivalent to hover:bg-sky-900 */
 }
 
 .popup-container {
@@ -134,23 +167,19 @@
     cursor: not-allowed;
 }
 
-.button-add-new {
-    position: absolute;
-    right: 0;
-    bottom: 30%;
-    margin-right: 8rem; /* equivalent to mr-32 */
+.add-new-button {
     background-color: var(--skyblue-800); /* equivalent to bg-sky-800 */
     color: #ffffff; /* equivalent to text-white */
     padding: 0.5rem 1.5rem; /* equivalent to px-6 py-2 */
     font-size: 0.875rem; /* equivalent to text-sm */
-    border-radius: 0.125rem; /* equivalent to rounded-sm */
+    border-radius: 4px; /* equivalent to rounded-sm */
     transition: background-color 0.2s ease-in-out;
+    white-space: nowrap;
 }
 
-.button-add-new:hover {
+.add-new-button:hover {
     background-color: var(--skyblue-900); /* equivalent to hover:bg-sky-900 */
 }
-
 
 .add-material-button {
     width: 100%;
@@ -201,12 +230,4 @@
 
 .save-button:hover {
     background-color: var(--skyblue-700);
-}
-
-@media only screen and (max-width: 600px){
-    .button-add-new {
-        margin-right: 20px;
-    }
-
-
 }
