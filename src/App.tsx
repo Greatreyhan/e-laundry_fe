@@ -12,6 +12,7 @@ import Navbar from './views/layout/navbar/Navbar';
 import ConfirmationAlert from './views/layout/alert/ConfirmationAlert';
 import MiniAlertConfirmation from './views/layout/alert/MiniAlertConfirmation';
 import Loading from './views/layout/alert/Loading';
+import RunningText from './views/component/running-text/RunningText';
 const Home = lazy(() => import('./views/page/home/Home'));
 const Dashboard = lazy(() => import('./views/page/dashboard/Dashboard'));
 const BatchCheckIn = lazy(() => import('./views/page/batch_check_in/BatchCheckIn'));
@@ -74,6 +75,7 @@ function App() {
         }}>
         <BrowserRouter>
           <Navbar showNavbar={showNavbar} setShowNavbar={setShowNavbar} />
+          <RunningText/>
           <Suspense fallback={
             <div >
               {/* Please Give Loading Animation :D*/}

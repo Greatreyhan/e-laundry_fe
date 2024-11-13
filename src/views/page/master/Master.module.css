@@ -32,7 +32,7 @@
 .search-container {
     background-color: var(--skyblue-50);
     position: absolute;
-    bottom: 20%;
+    bottom: 30%;
     width: 40%;
     border-radius: 4px;
     display: flex;
@@ -137,6 +137,7 @@
 .button-add-new {
     position: absolute;
     right: 0;
+    bottom: 30%;
     margin-right: 8rem; /* equivalent to mr-32 */
     background-color: var(--skyblue-800); /* equivalent to bg-sky-800 */
     color: #ffffff; /* equivalent to text-white */

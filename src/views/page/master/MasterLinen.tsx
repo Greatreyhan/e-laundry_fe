@@ -171,8 +171,7 @@ const MasterLinen = () => {
     return (
         <div>
             {/* Button & Filter Area */}
-            <div style={{ height: "17dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1" }}>
-                <div style={{ position: "absolute", fontWeight: "500", color: "var(--skyblue-50)" }}>Master {">"} Linen</div>
+            <div style={{ height: "10dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1" }}>
                 <div className={css[`search-container`]}>
                     <div className={css["arrow"]}><IoMdSearch /></div>
                     <input

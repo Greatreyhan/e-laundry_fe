@@ -1,0 +1,26 @@
+.running-text {
+    display: flex;
+    height: 1.75rem;
+    background-color: white;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    span {
+        position: absolute;
+        width: 150%;
+        top: 0;
+        color: rgb(239, 68, 68);
+        animation: animated-text 15s linear infinite; /* Change the seconds if you want to be faster */
+    }
+}
+
+@keyframes animated-text {
+    0% {
+        right: -100%;
+    }
+
+    100% {
+        right: 100%;
+    }
+}
