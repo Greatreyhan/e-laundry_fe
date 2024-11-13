@@ -69,12 +69,12 @@ const RunningText = () => {
   return (
     <>
       <a
-        className={css["running-text"]}
+        className={css["running-text-container"]}
         onClick={() => {
           handlePopupAddNew();
         }}
       >
-        <span>Terdapat {scannedLinensOvertime?.length} Linen Yang Tidak Dicuci Lebih Dari 3 Hari</span>
+          <div className={css["running-text"]}>Terdapat {scannedLinensOvertime?.length} Linen Yang Tidak Dicuci Lebih Dari 3 Hari</div>
       </a>
 
       <Popup
@@ -82,7 +82,7 @@ const RunningText = () => {
         showPopup={showPopupScanLinensOvertime}
         popupTitle={`Linen Yang Tidak Dicuci Lebih Dari 3 Hari`}
         popupContent={
-          <>
+          <div style={{zIndex: 99}}>
             <div
               style={{
                 height: "100%",
@@ -123,7 +123,7 @@ const RunningText = () => {
                   )}
               </table>
             </div>
-          </>
+          </div>
         }
       />
     </>

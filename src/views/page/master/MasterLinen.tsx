@@ -33,6 +33,7 @@ const MasterLinen = () => {
     const [selectedEditLinen, setSelectedEditLinen] = useState<LinensEntity | null>(null)
     const [selectedDefaultEditLinen, setSelectedDefaultEditLinen] = useState<LinensEntity | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
+    const [inputFilterSearch, setInputFilterSearch] = useState<string>()
     //-----------------------STATE VIEWS-----------------------//
 
     //------------------------FUNCTIONS------------------------//
@@ -151,7 +152,10 @@ const MasterLinen = () => {
         }
         const searchTerm = filterSearch.toLowerCase();
         return (
-            val.status?.toLowerCase().includes(searchTerm)
+            val.status?.toLowerCase().includes(searchTerm) || val.ruangan?.toLowerCase().includes(searchTerm) ||
+            val.id_linen?.toString().includes(searchTerm) || val.id_rfid?.toLowerCase().includes(searchTerm) ||
+            val.jenis?.toString().includes(searchTerm) || val.total_wash?.toString().includes(searchTerm) ||
+            format(val.date_last_wash ?? 0, "yyyy-MM-dd").toString().includes(searchTerm)
         );
     };
 
@@ -170,83 +174,104 @@ const MasterLinen = () => {
 
     return (
         <div>
+            {/* Space For Running Text */}
+            <div style={{ height: "4dvh" }} >&nbsp;</div>
             {/* Button & Filter Area */}
-            <div style={{ height: "10dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1" }}>
-                <div className={css[`search-container`]}>
-                    <div className={css["arrow"]}><IoMdSearch /></div>
-                    <input
-                        className={css['search-input']}
-                        id="search"
-                        type="text"
-                        placeholder="Search..."
-                        onChange={(event) => {
-                            setFilterSearch(event.target.value)
-                        }}
-                    />
-                    <div>&nbsp;</div>
+            <div style={{ height: "15dvh", backgroundColor: "var(--skyblue-600)", padding: "1dvh 4vw 1vh 4vw", position: "relative", zIndex: "1", alignItems: "center" }}>
+                <div className={css['container-header']}>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <div style={{ flex: 1 }} className={css[`search-container`]}>
+                            <input
+                                className={css['search-input']}
+                                id="search"
+                                type="text"
+                                placeholder="Search..."
+                                onChange={(event) => {
+                                    setInputFilterSearch(event.target.value)
+                                }}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        setFilterSearch(inputFilterSearch);
+                                    }
+                                }}
+                            />
+                            <div>&nbsp;</div>
+                        </div>
+                        <button className={css['search-button']} onClick={() => { setFilterSearch(inputFilterSearch) }}>
+                            <IoMdSearch />
+                        </button>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Add New + 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 2
+                        </button>
+                    </div>
                 </div>
-                <button className={css['button-add-new']} onClick={() => { handlePopupAddNew() }}>
-                    Add New +
-                </button>
             </div>
 
             {/* Table Area */}
-            <div style={{ height: "70dvh", padding: "2vh 4vw 1vh 4vw" }}>
-                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "70vh" }}>
+            <div style={{ height: "75dvh", padding: "2vh 4vw 1vh 4vw" }}>
+                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "75dvh" }}>
                     <div style={{ height: "100%", maxWidth: "92dvw", position: "relative", }}>
                         <div>&nbsp;</div>
-                        <div style={{position: "relative", overflow: "auto", height: "90%"}}>
-                        <table className="normalTable">
-                            <thead>
-                                <tr>
-                                    <th>NO</th>
-                                    <th>ID Linen</th>
-                                    <th>ID RFID</th>
-                                    <th>Jenis</th>
-                                    <th>Ruangan</th>
-                                    <th>Status</th>
-                                    <th>Total Wash</th>
-                                    <th>Date Last Wash</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            {tableListLinen != null &&
-                                <tbody>
-                                    {tableListLinen?.filter((val) => filtering(val)).slice(paginationTableListLinen.start, paginationTableListLinen.end).map((row, idx) => {
-                                        return (
-                                            <tr key={idx}>
-                                                <td>{idx + 1 + paginationTableListLinen.start}</td>
-                                                <td>{row.id_linen}</td>
-                                                <td>{row.id_rfid}</td>
-                                                <td>{row.jenis}</td>
-                                                <td>{row.ruangan}</td>
-                                                <td>{row.status}</td>
-                                                <td>{row.total_wash}</td>
-                                                <td>{row.date_last_wash == null ? "" : format(row.date_last_wash, "yyyy-MM-dd")}</td>
-                                                <th>
-                                                    <div className="can-hover" onClick={() => toggleTooltip(idx)}>
-                                                        <HiDotsVertical />
-                                                        {showTooltip[idx] &&
-                                                            <div className="tooltip" >
-                                                                <div className="button-tooltip" onClick={() => { handlePopupUpdate(row) }}>Edit</div>
-                                                                <div className="button-tooltip-delete" onClick={() => { handleDelete(row) }}>Delete</div>
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            }
-                        </table>
+                        <div style={{ position: "relative", overflow: "auto", height: "90%" }}>
+                            <table className="normalTable">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>ID Linen</th>
+                                        <th>ID RFID</th>
+                                        <th>Jenis</th>
+                                        <th>Ruangan</th>
+                                        <th>Status</th>
+                                        <th>Total Wash</th>
+                                        <th>Date Last Wash</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                {tableListLinen != null &&
+                                    <tbody>
+                                        {tableListLinen?.filter((val) => filtering(val)).slice(paginationTableListLinen.start, paginationTableListLinen.end).map((row, idx) => {
+                                            return (
+                                                <tr key={idx}>
+                                                    <td>{idx + 1 + paginationTableListLinen.start}</td>
+                                                    <td>{row.id_linen}</td>
+                                                    <td>{row.id_rfid}</td>
+                                                    <td>{row.jenis}</td>
+                                                    <td>{row.ruangan}</td>
+                                                    <td>{row.status}</td>
+                                                    <td>{row.total_wash}</td>
+                                                    <td>{row.date_last_wash == null ? "" : format(row.date_last_wash, "yyyy-MM-dd")}</td>
+                                                    <th>
+                                                        <div className="can-hover" onClick={() => toggleTooltip(idx)}>
+                                                            <HiDotsVertical />
+                                                            {showTooltip[idx] &&
+                                                                <div className="tooltip" >
+                                                                    <div className="button-tooltip" onClick={() => { handlePopupUpdate(row) }}>Edit</div>
+                                                                    <div className="button-tooltip-delete" onClick={() => { handleDelete(row) }}>Delete</div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                }
+                            </table>
                         </div>
                         <div className={css[`pagination-container`]}>
                             {tableListLinen != null &&
-                                <div>{paginationTableListLinen.start + 1}-{paginationTableListLinen.end > tableListLinen.length ? tableListLinen.length ?? 0 : paginationTableListLinen.end ?? 0}</div>
+                                <div>{paginationTableListLinen.start + 1}-{paginationTableListLinen.end > tableListLinen.filter((val) => filtering(val)).length ? tableListLinen.filter((val) => filtering(val)).length ?? 0 : paginationTableListLinen.end ?? 0}</div>
                             }
                             <div>of</div>
-                            <div>{tableListLinen?.length ?? 0}</div>
+                            <div>{tableListLinen?.filter((val) => filtering(val)).length ?? 0}</div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("left", tableListLinen, paginationTableListLinen, setPaginationTableListLinen) }}><FaArrowLeft /></div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("right", tableListLinen, paginationTableListLinen, setPaginationTableListLinen) }}><FaArrowRight /></div>
                         </div>
