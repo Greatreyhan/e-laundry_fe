@@ -33,6 +33,7 @@ const MasterUser = () => {
     const [selectedEditUser, setSelectedEditUser] = useState<AddUserEntity | null>(null)
     const [selectedDefaultEditUser, setSelectedDefaultEditUser] = useState<UserEntity | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
+    const [inputFilterSearch, setInputFilterSearch] = useState<string>()
     //-----------------------STATE VIEWS-----------------------//
 
     //------------------------FUNCTIONS------------------------//
@@ -144,29 +145,50 @@ const MasterUser = () => {
     return (
         <div>
             {/* Button & Filter Area */}
-            <div style={{ height: "10dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1", display: "flex" }}>
-                <div className={css[`search-container`]}>
-                    <div className={css["arrow"]}><IoMdSearch /></div>
-                    <input
-                        className={css['search-input']}
-                        id="search"
-                        type="text"
-                        placeholder="Search..."
-                        onChange={(event) => {
-                            setFilterSearch(event.target.value)
-                        }}
-                    />
-                    <div>&nbsp;</div>
+            {/* Space For Running Text */}
+            <div style={{ height: "4dvh" }} >&nbsp;</div>
+            {/* Button & Filter Area */}
+            <div style={{ height: "15dvh", backgroundColor: "var(--skyblue-600)", padding: "1dvh 4vw 1vh 4vw", position: "relative", zIndex: "1", alignItems: "center" }}>
+                <div className={css['container-header']}>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <div style={{ flex: 1 }} className={css[`search-container`]}>
+                            <input
+                                className={css['search-input']}
+                                id="search"
+                                type="text"
+                                placeholder="Search..."
+                                onChange={(event) => {
+                                    setInputFilterSearch(event.target.value)
+                                }}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        setFilterSearch(inputFilterSearch);
+                                    }
+                                }}
+                            />
+                            <div>&nbsp;</div>
+                        </div>
+                        <button className={css['search-button']} onClick={() => { setFilterSearch(inputFilterSearch) }}>
+                            <IoMdSearch />
+                        </button>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Add New + 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 2
+                        </button>
+                    </div>
                 </div>
-                <button className={css['button-add-new']} onClick={() => { handlePopupAddNew() }}>
-                    Add New +
-                </button>
-
             </div>
 
             {/* Table Area */}
-            <div style={{ height: "70dvh", padding: "2vh 4vw 1vh 4vw" }}>
-                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "70vh" }}>
+            <div style={{ height: "75dvh", padding: "2vh 4vw 1vh 4vw" }}>
+                <div style={{ backgroundColor: "white", boxShadow: "0 0 6px rgba(0.2, 0.2, 0.2, 0.2)", borderRadius: "5px", height: "75vh" }}>
                     <div style={{ height: "100%", maxWidth: "92dvw", position: "relative", }}>
                         <div>&nbsp;</div>
                         <div style={{position: "relative", overflow: "auto", height: "90%"}}>
@@ -207,10 +229,10 @@ const MasterUser = () => {
                         </div>
                         <div className={css[`pagination-container`]}>
                             {tableListUser != null &&
-                                <div>{paginationTableListUser.start + 1}-{paginationTableListUser.end > tableListUser.length ? tableListUser.length ?? 0 : paginationTableListUser.end ?? 0}</div>
+                                <div>{paginationTableListUser.start + 1}-{paginationTableListUser.end > tableListUser.filter((val) => filtering(val)).length ? tableListUser.filter((val) => filtering(val)).length ?? 0 : paginationTableListUser.end ?? 0}</div>
                             }
                             <div>of</div>
-                            <div>{tableListUser?.length ?? 0}</div>
+                            <div>{tableListUser?.filter((val) => filtering(val)).length ?? 0}</div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("left", tableListUser, paginationTableListUser, setPaginationTableListUser) }}><FaArrowLeft /></div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("right", tableListUser, paginationTableListUser, setPaginationTableListUser) }}><FaArrowRight /></div>
                         </div>
