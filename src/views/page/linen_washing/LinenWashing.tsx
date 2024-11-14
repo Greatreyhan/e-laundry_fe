@@ -24,6 +24,7 @@ const LinenWashing = () => {
     const [showPopupScanNewWashedLinens, setShowPopupScanNewWashedLinens] = useState<boolean>(false);
     const [scannedNewLinenWashing, setScannedNewLinenWashing] = useState<AddLinenWashingEntity[] | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
+    const [inputFilterSearch, setInputFilterSearch] = useState<string>()
     //-----------------------STATE VIEWS-----------------------//
 
     //------------------------FUNCTIONS------------------------//
@@ -112,25 +113,45 @@ const LinenWashing = () => {
     return (
         <div>
             {/* Button & Filter Area */}
-            <div style={{ height: "17dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1" }}>
-                <div style={{ position: "absolute", fontWeight: "500", color: "var(--skyblue-50)" }}>Linen Washing</div>
-                <div className={css[`search-container`]}>
-                    <div className={css["arrow"]}><IoMdSearch /></div>
-                    <input
-                        className={css['search-input']}
-                        id="search"
-                        type="text"
-                        placeholder="Search..."
-                        onChange={(event) => {
-                            setFilterSearch(event.target.value)
-                        }}
-                    />
-                    <div>&nbsp;</div>
+            {/* Space For Running Text */}
+            <div style={{ height: "4dvh" }} >&nbsp;</div>
+            {/* Button & Filter Area */}
+            <div style={{ height: "15dvh", backgroundColor: "var(--skyblue-600)", padding: "1dvh 4vw 1vh 4vw", position: "relative", zIndex: "1", alignItems: "center" }}>
+                <div className={css['container-header']}>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <div style={{ flex: 1 }} className={css[`search-container`]}>
+                            <input
+                                className={css['search-input']}
+                                id="search"
+                                type="text"
+                                placeholder="Search..."
+                                onChange={(event) => {
+                                    setInputFilterSearch(event.target.value)
+                                }}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        setFilterSearch(inputFilterSearch);
+                                    }
+                                }}
+                            />
+                            <div>&nbsp;</div>
+                        </div>
+                        <button className={css['search-button']} onClick={() => { setFilterSearch(inputFilterSearch) }}>
+                            <IoMdSearch />
+                        </button>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                        <RiRfidFill /> Scan Linen Done Washed
+                        </button>
+                        {/* <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 2
+                        </button> */}
+                    </div>
                 </div>
-                <button className={css['button-add-new']} onClick={() => { handlePopupAddNew() }}>
-                    <RiRfidFill /> Scan Linen Done Washed
-                </button>
-
             </div>
 
             {/* Table Area */}
@@ -170,10 +191,10 @@ const LinenWashing = () => {
                         </div>
                         <div className={css[`pagination-container`]}>
                             {tableListLinenWashing != null &&
-                                <div>{paginationTableListLinenWashing.start + 1}-{paginationTableListLinenWashing.end > tableListLinenWashing.length ? tableListLinenWashing.length ?? 0 : paginationTableListLinenWashing.end ?? 0}</div>
+                                <div>{paginationTableListLinenWashing.start + 1}-{paginationTableListLinenWashing.end > tableListLinenWashing.filter((val) => filtering(val)).length ? tableListLinenWashing.filter((val) => filtering(val)).length ?? 0 : paginationTableListLinenWashing.end ?? 0}</div>
                             }
                             <div>of</div>
-                            <div>{tableListLinenWashing?.length ?? 0}</div>
+                            <div>{tableListLinenWashing?.filter((val) => filtering(val)).length ?? 0}</div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("left", tableListLinenWashing, paginationTableListLinenWashing, setPaginationTableListLinenWashing) }}><FaArrowLeft /></div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("right", tableListLinenWashing, paginationTableListLinenWashing, setPaginationTableListLinenWashing) }}><FaArrowRight /></div>
                         </div>

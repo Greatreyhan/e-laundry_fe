@@ -29,6 +29,7 @@ const BatchCheckOut = () => {
     const [selectedScanNewBatchLinens, setSelectedScanNewBatchLinens] = useState<BatchCheckOutEntity | null>(null)
     const [selectedViewBatchLinen, setSelectedViewBatchLinen] = useState<BatchCheckOutEntity | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
+    const [inputFilterSearch, setInputFilterSearch] = useState<string>()
     //-----------------------STATE VIEWS-----------------------//
 
     //------------------------FUNCTIONS------------------------//
@@ -159,25 +160,45 @@ const BatchCheckOut = () => {
     return (
         <div>
             {/* Button & Filter Area */}
-            <div style={{ height: "17dvh", backgroundColor: "var(--skyblue-600)", padding: "1vh 4vw 1vh 4vw", position: "relative", zIndex: "1" }}>
-                <div style={{ position: "absolute", fontWeight: "500", color: "var(--skyblue-50)" }}>Batch Check Out</div>
-                <div className={css[`search-container`]}>
-                    <div className={css["arrow"]}><IoMdSearch /></div>
-                    <input
-                        className={css['search-input']}
-                        id="search"
-                        type="text"
-                        placeholder="Search..."
-                        onChange={(event) => {
-                            setFilterSearch(event.target.value)
-                        }}
-                    />
-                    <div>&nbsp;</div>
+            {/* Space For Running Text */}
+            <div style={{ height: "4dvh" }} >&nbsp;</div>
+            {/* Button & Filter Area */}
+            <div style={{ height: "15dvh", backgroundColor: "var(--skyblue-600)", padding: "1dvh 4vw 1vh 4vw", position: "relative", zIndex: "1", alignItems: "center" }}>
+                <div className={css['container-header']}>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <div style={{ flex: 1 }} className={css[`search-container`]}>
+                            <input
+                                className={css['search-input']}
+                                id="search"
+                                type="text"
+                                placeholder="Search..."
+                                onChange={(event) => {
+                                    setInputFilterSearch(event.target.value)
+                                }}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        setFilterSearch(inputFilterSearch);
+                                    }
+                                }}
+                            />
+                            <div>&nbsp;</div>
+                        </div>
+                        <button className={css['search-button']} onClick={() => { setFilterSearch(inputFilterSearch) }}>
+                            <IoMdSearch />
+                        </button>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                        <RiRfidFill /> Scan Linens
+                        </button>
+                        {/* <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 1
+                        </button>
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                            Button Lain 2
+                        </button> */}
+                    </div>
                 </div>
-                <button className={css['button-add-new']} onClick={() => { handlePopupAddNew() }}>
-                    <RiRfidFill /> Scan Linens
-                </button>
-
             </div>
 
             {/* Table Area */}
@@ -221,10 +242,10 @@ const BatchCheckOut = () => {
                         </table>
                         <div className={css[`pagination-container`]}>
                             {tableListBatchCheckOut != null &&
-                                <div>{paginationTableListBatchCheckOut.start + 1}-{paginationTableListBatchCheckOut.end > tableListBatchCheckOut.length ? tableListBatchCheckOut.length ?? 0 : paginationTableListBatchCheckOut.end ?? 0}</div>
+                                <div>{paginationTableListBatchCheckOut.start + 1}-{paginationTableListBatchCheckOut.end > tableListBatchCheckOut.filter((val) => filtering(val)).length ? tableListBatchCheckOut.filter((val) => filtering(val)).length ?? 0 : paginationTableListBatchCheckOut.end ?? 0}</div>
                             }
                             <div>of</div>
-                            <div>{tableListBatchCheckOut?.length ?? 0}</div>
+                            <div>{tableListBatchCheckOut?.filter((val) => filtering(val)).length ?? 0}</div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("left", tableListBatchCheckOut, paginationTableListBatchCheckOut, setPaginationTableListBatchCheckOut) }}><FaArrowLeft /></div>
                             <div className={css["arrow"]} onClick={() => { TablePaginationUtils.handlePagination("right", tableListBatchCheckOut, paginationTableListBatchCheckOut, setPaginationTableListBatchCheckOut) }}><FaArrowRight /></div>
                         </div>
