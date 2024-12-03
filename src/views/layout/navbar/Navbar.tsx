@@ -66,14 +66,14 @@ function Navbar(props: { [key: string]: any }) {
                             ? <MdKeyboardDoubleArrowRight size={30} /> : <MdKeyboardDoubleArrowLeft size={30} />}
                     </button>
                     <div>
-                        <NavLink className="logo" to="#" >
+                        <NavLink className="" to="#" >
                             {/* <img src={require("../../asset/image/Logo Hiventory Navbar.png")} alt="logo" /> */}
-                            <div style={{ marginTop: "1vh", padding: "5px 5px", color: "var(--skyblue-500)", borderRadius: "5px", fontWeight: "500", backgroundColor: "white" }}>
+                            <div className='text-2xl mt-8 font-bold text-white w-full' >
                                 E-Laundry
                             </div>
                         </NavLink>
                         <div style={{ marginTop: "1vh", color: "var(--skyblue-50)", fontWeight: "500" }}>
-                            {contextUserEntity?.username ?? ""} {`(${contextUserEntity?.role ?? ""})`}
+                            {contextUserEntity?.username ?? ""} {`${contextUserEntity?.role ?? ""}`}
                         </div>
 
                         <div className="links nav-top">

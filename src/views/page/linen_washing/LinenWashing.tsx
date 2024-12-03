@@ -9,6 +9,7 @@ import TablePaginationUtils from "../../../utility/TablePagination";
 import { format } from "date-fns";
 import { RiRfidFill } from "react-icons/ri";
 import { AddLinenWashingEntity, LinenWashingEntity } from "../../../data/entity/LinenWashingEntity";
+import axios from 'axios';
 
 const LinenWashing = () => {
     //-----------------------STATE VIEWS-----------------------//
@@ -25,32 +26,67 @@ const LinenWashing = () => {
     const [scannedNewLinenWashing, setScannedNewLinenWashing] = useState<AddLinenWashingEntity[] | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
     const [inputFilterSearch, setInputFilterSearch] = useState<string>()
+
+    const [dataRFID, setDataRFID] = useState<any>([])
+
     //-----------------------STATE VIEWS-----------------------//
 
     //------------------------FUNCTIONS------------------------//
+    const handleGetData = async () =>{
+        try {
+            const response = await axios.get('https://elaundry-demo.vercel.app/api/data');
+            const data = response.data; // Assuming the response contains the JSON provided
+            if (data.length > 0) {
+                setDataRFID(data); // Extract the rfid array
+            } else {
+                console.log('No RFID data found.');
+            }
+        } catch (err: any) {
+            console.log(err.message || 'Something went wrong!');
+        }
+    }
+
+    const handleScanBatch = async () => {
+
+        // Add data to server
+        try {
+            const response = await axios.get('https://elaundry-demo.vercel.app/api/scan');
+            const data = response.data; 
+            if (data.length > 0 && data[0]) {
+                console.log(data[0].rfid)
+                const result = dataRFID.filter((item:any) => data[0].rfid.includes(item.id_rfid));
+                return result
+            } else {
+                console.log('No RFID data found.');
+            }
+        } catch (err: any) {
+            console.log(err.message || 'Something went wrong!');
+        }
+    }
 
 
     const handlePopupAddNew = async () => {
+
+        const sample_add_new_linen = await handleScanBatch()
         setShowPopupScanNewWashedLinens(true);
         setScannedNewLinenWashing(null);
-    
-        const sample_add_new_linen: AddLinenWashingEntity[] = [
-            { id_linen: 7, id_rfid: "AD82232DD", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
-            { id_linen: 8, id_rfid: "AD82A3234", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
-            { id_linen: 9, id_rfid: "AD82A335D", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
-            { id_linen: 10, id_rfid: "AD82A3345", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
-            { id_linen: 11, id_rfid: "AD82A223C", ruangan: "ANGGREK 1", jenis: "Surgical Gown" }
-        ];
+        if(sample_add_new_linen){
+        // const sample_add_new_linen: AddLinenWashingEntity[] = [
+        //     { id_linen: 7, id_rfid: "AD82232DD", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
+        //     { id_linen: 8, id_rfid: "AD82A3234", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
+        //     { id_linen: 9, id_rfid: "AD82A335D", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
+        //     { id_linen: 10, id_rfid: "AD82A3345", ruangan: "ANGGREK 1", jenis: "Surgical Gown" },
+        //     { id_linen: 11, id_rfid: "AD82A223C", ruangan: "ANGGREK 1", jenis: "Surgical Gown" }
+        // ];
         setScannedNewLinenWashing(null)
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        for (let i = 0; i < 5; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+        for (let i = 0; i < sample_add_new_linen.length; i++) {
             if (i === 0) {
                 setScannedNewLinenWashing([sample_add_new_linen[0]])
             } else {
                 setScannedNewLinenWashing((prev) => (prev ? [...prev, sample_add_new_linen[i]] : [sample_add_new_linen[i]]));
             }
         }
+    }
     };
     
 
@@ -104,6 +140,7 @@ const LinenWashing = () => {
     };
 
     useEffect(() => {
+        handleGetData()
         generateData()
         // eslint-disable-next-line
     }, []);
@@ -238,7 +275,7 @@ const LinenWashing = () => {
                                 }
                             </table>
                         </div>
-                        <div className={css['container-button-popup']}>
+                        <div className={'flex mt-8 justify-end'}>
                             <button
                                 className={css['button-enabled']}
                                 onClick={() => handleSaveAddNew()}

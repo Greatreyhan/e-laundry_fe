@@ -12,7 +12,7 @@ import { PiBarcodeBold } from "react-icons/pi";
 import { AddLinensEntity, LinensEntity } from "../../../data/entity/LinenEntity";
 import { format } from "date-fns";
 import { FaDoorOpen } from "react-icons/fa";
-
+import axios from 'axios';
 
 const MasterLinen = () => {
     //-----------------------STATE VIEWS-----------------------//
@@ -34,7 +34,30 @@ const MasterLinen = () => {
     const [selectedDefaultEditLinen, setSelectedDefaultEditLinen] = useState<LinensEntity | null>(null)
     const [filterSearch, setFilterSearch] = useState<string>()
     const [inputFilterSearch, setInputFilterSearch] = useState<string>()
-    //-----------------------STATE VIEWS-----------------------//
+
+    const [dataRFID, setDataRFID] = useState<any>([])
+
+    const [showPopupAddNewLinenBatch, setShowPopupAddNewLinenBatch] = useState<boolean>(false);
+    const [selectedAddNewLinenBatch, setSelectedAddNewLinenBatch] = useState<AddLinensEntity | null>(null)
+
+    //----------------------- SCAN ID_RFID -----------------------//
+
+    const handleScanRFID = async (e: any) => {
+        e.preventDefault()
+
+        try {
+            const response = await axios.get('https://elaundry-demo.vercel.app/api/scan');
+            const data = response.data; // Assuming the response contains the JSON provided
+            if (data.length > 0 && data[0].rfid) {
+                setDataRFID(data[0].rfid); // Extract the rfid array
+            } else {
+                console.log('No RFID data found.');
+            }
+        } catch (err: any) {
+            console.log(err.message || 'Something went wrong!');
+        }
+
+    }
 
     //------------------------FUNCTIONS------------------------//
 
@@ -44,35 +67,57 @@ const MasterLinen = () => {
         setSelectedAddNewLinen(null)
     }
 
+    const handlePopupAddNewBatch = async () => {
+        setShowPopupAddNewLinen(true)
+        setSelectedAddNewLinen(null)
+    }
     const handleSaveAddNew = async () => {
-        if (!selectedAddNewLinen?.jenis || !selectedAddNewLinen?.id_rfid || !selectedAddNewLinen?.ruangan) {
+        if (!selectedAddNewLinen?.jenis || dataRFID.length === 0 || !selectedAddNewLinen?.ruangan) {
             return;
         }
-
+    
         setContextLoading(true);
-
+    
         try {
             const maxId = tableListLinen?.reduce((max, item) => item.id_linen > max ? item.id_linen : max, 0) ?? 0;
-            const newLinen: LinensEntity = {
-                id_linen: maxId + 1,
-                id_rfid: selectedAddNewLinen.id_rfid,
-                jenis: selectedAddNewLinen.jenis,
-                ruangan: selectedAddNewLinen.ruangan,
-                status: "AKTIF",
-                date_last_wash: null,
-                total_wash: 0
-            };
-            setTableListLinen(prevList => prevList ? [...prevList, newLinen] : [newLinen]);
+    
+            // Process all linens sequentially to ensure error handling
+            const newLinens:any = [];
+            for (const [i, data] of dataRFID.entries()) {
+                const newLinen: LinensEntity = {
+                    id_linen: maxId + 1 + i,
+                    id_rfid: data,
+                    jenis: selectedAddNewLinen.jenis ?? '',
+                    ruangan: selectedAddNewLinen.ruangan ?? '',
+                    status: "AKTIF",
+                    date_last_wash: new Date(),
+                    total_wash: 0,
+                };
+    
+                // Add data to server
+                await axios.post("https://elaundry-demo.vercel.app/api/data", newLinen, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+    
+                // Add data to local list
+                newLinens.push(newLinen);
+            }
+    
+            // Update the local state once all linens are added
+            setTableListLinen(prevList => prevList ? [...prevList, ...newLinens] : newLinens);
+    
             contextShowMiniAlertFunc(new MiniAlertEntity({ messages: "Success Add New" }));
             setShowPopupAddNewLinen(false);
         } catch (error: any) {
             contextShowMiniAlertFunc(new MiniAlertEntity({ messages: error.toString(), level: 3 }));
         } finally {
             setContextLoading(false);
-            console.log(tableListLinen)
+            console.log(tableListLinen);
         }
     };
-
+    
 
     const handlePopupUpdate = async (data: LinensEntity) => {
         setSelectedEditLinen(data)
@@ -130,13 +175,7 @@ const MasterLinen = () => {
                 { id_linen: 12, id_rfid: "AD82232DD", ruangan: "ANGGREK 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 12 },
                 { id_linen: 13, id_rfid: "AD82A3234", ruangan: "ANGGREK 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 45 },
                 { id_linen: 14, id_rfid: "AD82A335D", ruangan: "ANGGREK 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 32 },
-                { id_linen: 15, id_rfid: "AD82A3345", ruangan: "ANGGREK 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 1 },
-                { id_linen: 16, id_rfid: "AD82A223C", ruangan: "ANGGREK 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 23 },
-                { id_linen: 17, id_rfid: "AD82A356F", ruangan: "MELATI 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 12 },
-                { id_linen: 18, id_rfid: "AD82A3457", ruangan: "MELATI 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 45 },
-                { id_linen: 19, id_rfid: "AD82A246D", ruangan: "MELATI 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 17 },
-                { id_linen: 20, id_rfid: "AD8223EDD", ruangan: "MAWAR 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 2 },
-                { id_linen: 21, id_rfid: "AD8223EAD", ruangan: "MAWAR 1", jenis: "Surgical Gown", status: "AKTIF", date_last_wash: new Date(), total_wash: 47 }
+
             ]
             setTableListLinen(sample_data)
             setContextLoading(false)
@@ -203,14 +242,14 @@ const MasterLinen = () => {
                     </div>
                     <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
                         <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
-                            Add New + 1
+                            Add New Single
                         </button>
-                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
-                            Button Lain 1
+                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNewBatch() }}>
+                            Add New Batch
                         </button>
-                        <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
+                        {/* <button className={css['add-new-button']} onClick={() => { handlePopupAddNew() }}>
                             Button Lain 2
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>
@@ -289,7 +328,15 @@ const MasterLinen = () => {
                     <>
                         <div className={css['popup-container']}>
                             <label className={css['popup-label']} htmlFor="inbound_number">ID RFID</label>
-                            <div className={css['popup-input-container']}>
+
+                            {/* Data From Scanning */}
+                            <ul className="mb-4">
+                                {dataRFID.map((rfid:any, index:any) => (
+                                    <li className="text-xs" key={index}>{index+1}. {rfid}</li>
+                                ))}
+                            </ul>
+
+                            {/* <div className={css['popup-input-container']}>
                                 <span className={css['popup-icon']}><PiBarcodeBold className={css['popup-icon-color']} /></span>
                                 <input
                                     className={css['popup-input']}
@@ -306,7 +353,7 @@ const MasterLinen = () => {
                                         });
                                     }}
                                 />
-                            </div>
+                            </div> */}
                             <label className={css['popup-label']} htmlFor="vehicle_number">Jenis</label>
                             <div className={css['popup-input-container']}>
                                 <span className={css['popup-icon']}><LiaWindowMaximize className={css['popup-icon-color']} /></span>
@@ -345,12 +392,20 @@ const MasterLinen = () => {
                                     }}
                                 />
                             </div>
-                            <button
-                                className={selectedAddNewLinen?.id_rfid && selectedAddNewLinen?.ruangan && selectedAddNewLinen?.jenis ? css['button-enabled'] : css['button-disabled']}
-                                onClick={() => handleSaveAddNew()}
-                            >
-                                Save
-                            </button>
+                            <div className="flex items-center justify-end w-full gap-x-5">
+                                <button
+                                    className='button px-6 py-1.5 text-sky-800 rounded-lg'
+                                    onClick={(e) => handleScanRFID(e)}
+                                >
+                                    Scan
+                                </button>
+                                <button
+                                    className={selectedAddNewLinen?.id_rfid && selectedAddNewLinen?.ruangan && selectedAddNewLinen?.jenis ? 'button px-6 py-1.5 bg-sky-700 text-white rounded-lg' : 'button px-6 py-1.5 bg-slate-700 text-white rounded-lg disabled'}
+                                    onClick={() => handleSaveAddNew()}
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </>
                 }
